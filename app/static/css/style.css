@@ -114,6 +114,10 @@ body {
   align-items: center;
 }
 
+.action-group form {
+  margin: 0;
+}
+
 /* Fixed bottom actions (booking/hand-in) */
 .fixed-action-bar {
   position: fixed;
@@ -257,6 +261,33 @@ tbody tr:hover {
 .btn-danger-outline {
   background-color: rgba(245, 101, 101, 0.1);
   color: #742a2a;
+  border-color: rgba(245, 101, 101, 0.8);
+}
+
+.btn-danger-outline:hover,
+.btn-danger-outline:focus {
+  border-color: rgba(245, 101, 101, 1);
+}
+
+/* Compact link-style danger action (admin delete) */
+.danger-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.45rem;
+  border: 1px solid rgba(245, 101, 101, 0.9);
+  border-radius: 0.35rem;
+  background: transparent;
+  color: #b91c1c;
+  font-size: 0.875rem;
+  line-height: 1.1;
+  text-decoration: none;
+}
+
+.danger-link:hover,
+.danger-link:focus {
+  border-color: rgba(245, 101, 101, 1);
+  background-color: rgba(245, 101, 101, 0.08);
+  color: #7f1d1d;
 }
 
 /* Log action badges */

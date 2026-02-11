@@ -29,9 +29,9 @@
                         <td>{{ log.user_name or '—' }}</td>
                         <td>
                             {% if log.action == 'booked' %}
-                                <span class="log-action-booked">Tatt ut</span>
+                                <span class="status-badge status-booked">Tatt ut</span>
                             {% elif log.action == 'handed_in' %}
-                                <span class="log-action-handed">Levert</span>
+                                <span class="status-badge status-available">Levert</span>
                             {% else %}
                                 {{ log.action | title }}
                             {% endif %}
