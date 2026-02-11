@@ -3,7 +3,7 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-<h2>Dashboard</h2>
+<h2>RK Depot Ski og Oppegård</h2>
 <p>Oversikt over hele biblioteket</p>
 
 <a href="{{ url_for('admin.add_device') }}" role="button">+ Legg til</a>
@@ -11,7 +11,7 @@
 {% set status_labels = {'available': 'Ledig', 'booked': 'Tatt ut', 'unavailable': 'Utilgjengelig'} %}
 
 {% if devices %}
-    <div style="overflow-x: auto;">
+    <div class="table-scroll">
         <table role="grid" class="compact">
             <thead>
                 <tr>
@@ -37,8 +37,8 @@
                             <div class="action-group">
                                 <a href="{{ url_for('admin.edit_device', device_id=device.id) }}">Endre</a>
                                 <a href="{{ url_for('log.device_log', device_id=device.id) }}">Logg</a>
-                                <form method="POST" action="{{ url_for('admin.delete_device', device_id=device.id) }}" style="display: inline;" onsubmit="return confirm('Sikker?');">
-                                    <button type="submit" role="button" class="outline" style="background-color: rgba(245, 101, 101, 0.1); color: #742a2a;">Slett</button>
+                                <form method="POST" action="{{ url_for('admin.delete_device', device_id=device.id) }}" onsubmit="return confirm('Sikker?');">
+                                    <button type="submit" role="button" class="outline btn-danger-outline">Slett</button>
                                 </form>
                             </div>
                         </td>
