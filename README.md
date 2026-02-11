@@ -33,11 +33,11 @@ The current setup is using gunicorn in a gcloud vm. Any adaptations may be requi
    ```
 
 5. **Access the application**
-   - Open your browser and go to `http://localhost:5000`
-   - Admin Dashboard: `http://localhost:5000/admin`
-   - User Dashboard: `http://localhost:5000/user`
-   - Device Status: `http://localhost:5000/status`
-   - Activity Log: `http://localhost:5000/log`
+   - Open your browser and go to `/`
+   - Admin Dashboard: `/admin`
+   - User Dashboard: `/user`
+   - Device Status: `/status`
+   - Activity Log: `/log`
 
 ## Database
 
@@ -142,7 +142,7 @@ This application is built with accessibility in mind:
 ## Project Structure
 
 ```
-RK devcelibrary/
+RK_depot/
 ├── app/
 │   ├── __init__.py           # Flask app factory
 │   ├── models.py             # SQLAlchemy models
