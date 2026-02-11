@@ -17,11 +17,12 @@ def create_app():
     db.init_app(app)
     
     # Register blueprints
-    from app.routes import admin_bp, user_bp, status_bp, log_bp
+    from app.routes import admin_bp, user_bp, status_bp, log_bp, main_bp
     app.register_blueprint(admin_bp)
     app.register_blueprint(user_bp)
     app.register_blueprint(status_bp)
     app.register_blueprint(log_bp)
+    app.register_blueprint(main_bp)
     
     # Create tables
     with app.app_context():
