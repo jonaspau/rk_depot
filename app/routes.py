@@ -120,8 +120,14 @@ def update_device_status(device_id):
         device.current_user = None
         device.booked_at = None
 
-    db.session.commit()
-    flash(f' {name} {device_id} status endret til {new_status}', 'success')
+    try:
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Feil ved oppdatering av status: {e}', 'error')
+        return redirect(url_for('admin.admin_dashboard'))
+
+    flash(f'{device.name} {device.id} status endret til {new_status}', 'success')
     return redirect(url_for('admin.admin_dashboard'))
 
 
