@@ -19,7 +19,7 @@
         {% else %}
             <div class="form-group">
                 <label for="user_name">Bruker</label>
-                <input id="user_name" name="user_name" placeholder="Brukernavn">
+                <input id="user_name" name="user_name" placeholder="Brukernavn" required>
             </div>
         {% endif %}
         <div class="form-group">
@@ -47,7 +47,11 @@
             <div class="container fixed-action-bar__inner">
                 <div class="action-group">
                     <a href="{{ url_for('user.user_dashboard') }}" role="button" class="outline">Tilbake</a>
-                    <button type="submit" role="button">Lever</button>
+                    {% if session_user %}
+                        <button type="submit" role="button">Lever</button>
+                    {% else %}
+                        <button type="submit" name="intent" value="set_user" role="button">Hent enheter</button>
+                    {% endif %}
                 </div>
             </div>
         </div>
