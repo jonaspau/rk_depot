@@ -17,6 +17,12 @@ body {
   margin-bottom: 2rem;
   border-bottom: 1px solid var(--form-element-disabled-border-color);
 }
+  .action-group {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
 
 .navbar nav {
   display: flex;
@@ -101,10 +107,11 @@ body {
 }
 /* device-actions removed (not used) */
 
-.button-group {
+.action-group {
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .form-section {
@@ -156,6 +163,7 @@ td {
   padding: 0.75rem;
   text-align: left;
   border-bottom: 1px solid var(--form-element-disabled-border-color);
+  vertical-align: middle;
 }
 
 tbody tr:hover {

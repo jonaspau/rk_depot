@@ -12,7 +12,7 @@
             <input id="user_name" name="user_name" value="{{ session_user or '' }}" placeholder="Skriv brukernavn eller la stå tomt for å fjerne">
         </div>
         <input type="hidden" name="next" value="{{ next }}">
-        <div class="button-group">
+        <div class="action-group">
             <button type="submit">Lagre</button>
             <a href="{{ next }}" role="button" class="outline">Avbryt</a>
         </div>
