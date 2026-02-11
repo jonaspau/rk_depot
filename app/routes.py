@@ -9,7 +9,12 @@ admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 user_bp = Blueprint('user', __name__, url_prefix='/user')
 status_bp = Blueprint('status', __name__, url_prefix='/status')
 log_bp = Blueprint('log', __name__, url_prefix='/log')
+main_bp = Blueprint('main', __name__)
 
+
+@main_bp.route('/')
+def index():
+    return redirect(url_for('user.user_dashboard'))
 
 # Admin Routes
 @admin_bp.route('/')
