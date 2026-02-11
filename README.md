@@ -3,16 +3,6 @@
 A web-based application for managing device bookings and tracking their usage. Built with Flask and SQLite.
 The current setup is using gunicorn in a gcloud vm. Any adaptations may be required for other usage.
 
-## Features
-
-- **Admin Dashboard**: Add, edit, and delete devices with ID, name, category, and location
-- **User Booking**: Reserve one or more devices with automatic availability updates
-- **Device Hand-in**: Return devices with optional error/damage reporting
-- **Status Page**: Real-time overview of all devices and their current status
-- **Activity Log**: Complete audit trail with timestamps, users, and comments
-- **Responsive Design**: Built with Pico CSS for accessibility and simplicity
-- **Accessible HTML**: WCAG-compliant markup with proper semantic HTML
-
 ## Installation
 
 ### Prerequisites
@@ -23,7 +13,7 @@ The current setup is using gunicorn in a gcloud vm. Any adaptations may be requi
 
 1. **Clone or navigate to the project directory**
    ```bash
-   cd /path/to/RK\ devcelibrary
+   cd /path/to/RK_depot
    ```
 
 2. **Create a virtual environment** (recommended)
