@@ -35,13 +35,13 @@
         <div class="form-group">
             <label for="status">Status</label>
             <select id="status" name="status">
-                <option value="available" {% if device.status=='available' %}selected{% endif %}>Available</option>
-                <option value="booked" {% if device.status=='booked' %}selected{% endif %}>Booked</option>
-                <option value="unavailable" {% if device.status=='unavailable' %}selected{% endif %}>Unavailable</option>
+                <option value="available" {% if device.status=='available' %}selected{% endif %}>Ledig</option>
+                <option value="booked" {% if device.status=='booked' %}selected{% endif %}>Tatt ut</option>
+                <option value="unavailable" {% if device.status=='unavailable' %}selected{% endif %}>Utilgjengelig</option>
             </select>
         </div>
 
-        <div class="button-group">
+        <div class="action-group">
             <button type="submit" role="button">Lagre</button>
             <a href="{{ url_for('admin.admin_dashboard') }}" role="button" class="outline">Tilbake</a>
         </div>

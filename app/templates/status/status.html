@@ -5,6 +5,8 @@
 {% block content %}
 <h2>Status</h2>
 
+{% set status_labels = {'available': 'Ledig', 'booked': 'Tatt ut', 'unavailable': 'Utilgjengelig'} %}
+
 {% if devices %}
     <div style="overflow-x: auto; margin-top: 1rem;">
         <table role="grid">
@@ -24,7 +26,7 @@
                         <td><strong>{{ device.id }}</strong></td>
                         <td>{{ device.name }}</td>
                         <td>{{ device.location }}</td>
-                        <td><span class="status-badge status-{{ device.status }}">{{ device.status | replace('_', ' ') | title }}</span></td>
+                        <td><span class="status-badge status-{{ device.status }}">{{ status_labels.get(device.status, device.status | replace('_', ' ') | title) }}</span></td>
                         <td>{{ device.current_user or '—' }}</td>
                         <td><a href="{{ url_for('log.device_log', device_id=device.id) }}" role="button" class="outline">Se logg</a></td>
                     </tr>
