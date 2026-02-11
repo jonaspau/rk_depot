@@ -28,14 +28,7 @@
                         <td>{{ device.name }}</td>
                         <td>{{ device.location }}</td>
                         <td>
-                            <form class="inline-form" method="POST" action="{{ url_for('admin.update_device_status', device_id=device.id) }}">
-                                <select name="status" aria-label="Device status">
-                                    <option value="available" {% if device.status=='available' %}selected{% endif %}>Ledig</option>
-                                    <option value="booked" {% if device.status=='booked' %}selected{% endif %}>Booket</option>
-                                    <option value="unavailable" {% if device.status=='unavailable' %}selected{% endif %}>Utilgjengelig</option>
-                                </select>
-                                <button type="submit" role="button" class="outline">Oppdater</button>
-                            </form>
+                            <span class="status-badge status-{{ device.status }}">{{ device.status | replace('_', ' ') | title }}</span>
                         </td>
                         <td>{{ device.current_user or '—' }}</td>
                         <td>
