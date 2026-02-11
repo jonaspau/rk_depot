@@ -1,6 +1,7 @@
-# Device Booking System
+# RK depot
 
 A web-based application for managing device bookings and tracking their usage. Built with Flask and SQLite.
+The current setup is using gunicorn in a gcloud vm. Any adaptations may be required for other usage.
 
 ## Features
 
@@ -170,32 +171,8 @@ RK devcelibrary/
 └── README.md                 # This file
 ```
 
-## Future Enhancements
-
-Potential features for future development:
-- User authentication and roles
-- OneDrive/cloud storage integration
-- Email notifications for bookings
-- Device barcode scanning
-- Recurring bookings
-- Device maintenance scheduling
-- Export reports to PDF/Excel
-- Mobile app companion
-- WebSocket real-time updates
-
-## Troubleshooting
-
-### Port already in use
-If port 5000 is already in use, modify the port in `run.py`:
-```python
-app.run(debug=True, host='localhost', port=5001)
-```
-
 ### Database errors
 To reset the database, delete `device_booking.db` and run the application again to create a fresh database.
-
-### Template not found errors
-Ensure the templates are in the correct directory: `app/templates/`
 
 ## Support
 
