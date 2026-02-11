@@ -33,7 +33,7 @@ def add_device():
 
         # Check if device ID already exists
         if Device.query.filter_by(id=device_id).first():
-            flash('Device ID already exists', 'error')
+            flash('IDen er allerede registrert', 'error')
             return redirect(url_for('admin.add_device'))
 
         device = Device(
@@ -46,7 +46,7 @@ def add_device():
         db.session.add(device)
         db.session.commit()
 
-        flash(f'Device {name} added successfully', 'success')
+        flash(f'{device_id} - {name} lagt til', 'success')
         return redirect(url_for('admin.admin_dashboard'))
 
     return render_template('admin/add_device.html')
@@ -85,7 +85,7 @@ def edit_device(device_id):
             device.status = status
 
         db.session.commit()
-        flash(f'Device {device.name} updated successfully', 'success')
+        flash(f'{name} {device_id} endret', 'success')
         return redirect(url_for('admin.admin_dashboard'))
 
     return render_template('admin/edit_device.html', device=device)
@@ -99,7 +99,7 @@ def delete_device(device_id):
     db.session.delete(device)
     db.session.commit()
 
-    flash(f'Device {device_name} deleted successfully', 'success')
+    flash(f'{name} {device_id} fjernet', 'success')
     return redirect(url_for('admin.admin_dashboard'))
 
 
@@ -110,7 +110,7 @@ def update_device_status(device_id):
 
     # Validate status
     if new_status not in ['available', 'booked', 'unavailable']:
-        flash('Invalid status', 'error')
+        flash('Ugyldig status', 'error')
         return redirect(url_for('admin.admin_dashboard'))
 
     device.status = new_status
@@ -121,7 +121,7 @@ def update_device_status(device_id):
         device.booked_at = None
 
     db.session.commit()
-    flash(f'Device {device.name} status updated to {new_status}', 'success')
+    flash(f' {name} {device_id} status endret til {new_status}', 'success')
     return redirect(url_for('admin.admin_dashboard'))
 
 
@@ -158,10 +158,10 @@ def set_user():
     next_page = request.form.get('next') or url_for('user.user_dashboard')
     if new_user:
         session['user_name'] = new_user
-        flash(f'Signed in as {new_user}', 'success')
+        flash(f'Logget inn som {new_user}', 'success')
     else:
         session.pop('user_name', None)
-        flash('Cleared signed in user', 'success')
+        flash('Logget ut', 'success')
     return redirect(next_page)
 
 
@@ -183,7 +183,7 @@ def book_device():
         device_ids = [d for d in device_ids if d]
 
         if not device_ids:
-            flash('Please select at least one device', 'error')
+            flash('Velg minst en enhet', 'error')
             return redirect(url_for('user.book_device'))
 
         for device_id in device_ids:
@@ -225,7 +225,7 @@ def book_device():
         session['user_name'] = user_name
 
         db.session.commit()
-        flash(f'Successfully booked {len(device_ids)} device(s)', 'success')
+        flash(f'Tok ut {len(device_ids)} enhet(er)', 'success')
         return redirect(url_for('user.user_dashboard'))
 
     # GET: support filtering by category and location
@@ -265,7 +265,7 @@ def hand_in_device():
         comment = request.form.get('comment')
 
         if not device_ids:
-            flash('Please select at least one device to hand in', 'error')
+            flash('Velg minst en enhet for å levere', 'error')
             return redirect(url_for('user.hand_in_device'))
 
         handed_in_count = 0
@@ -304,7 +304,7 @@ def hand_in_device():
 
         db.session.commit()
 
-        flash(f'Handed in {handed_in_count} device(s)', 'success')
+        flash(f'Leverte {handed_in_count} enhet(er)', 'success')
         return redirect(url_for('user.user_dashboard'))
 
     # GET: show only active booked devices for the current user (if known)
