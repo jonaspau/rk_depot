@@ -5,6 +5,8 @@
 {% block content %}
 <h2>Logg for {{ device.name }} {{ device.id }}</h2>
 
+{% set status_labels = {'available': 'Ledig', 'booked': 'Tatt ut', 'unavailable': 'Utilgjengelig'} %}
+
 <div style="overflow-x: auto;">
     <table class="compact" style="margin-bottom:1rem;">
         <tbody>
@@ -18,7 +20,7 @@
                 <td><strong>Sted</strong></td>
                 <td>{{ device.location }}</td>
                 <td><strong>Status</strong></td>
-                <td><span class="status-badge status-{{ device.status }}">{{ device.status | replace('_', ' ') | title }}</span></td>
+                <td><span class="status-badge status-{{ device.status }}">{{ status_labels.get(device.status, device.status | replace('_', ' ') | title) }}</span></td>
             </tr>
         </tbody>
     </table>
