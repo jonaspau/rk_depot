@@ -266,9 +266,19 @@ def hand_in_device():
         form_user = request.form.get('user_name')
         session_user = session.get('user_name')
         user_name = form_user or session_user
+        intent = request.form.get('intent')
         device_ids = request.form.getlist('device_ids') + request.form.getlist('device_ids[]')
         device_ids = [d for d in device_ids if d]
         comment = request.form.get('comment')
+
+        # If no session user is set, allow a first submit to set the user and refresh.
+        if (intent == 'set_user' or (not device_ids and form_user and not session_user)):
+            session['user_name'] = form_user
+            return redirect(url_for('user.hand_in_device'))
+
+        if not user_name:
+            flash('Skriv inn brukernavn', 'error')
+            return redirect(url_for('user.hand_in_device'))
 
         if not device_ids:
             flash('Velg minst en enhet for å levere', 'error')
