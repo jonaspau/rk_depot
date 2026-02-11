@@ -8,6 +8,8 @@
 
 <a href="{{ url_for('admin.add_device') }}" role="button">+ Legg til</a>
 
+{% set status_labels = {'available': 'Ledig', 'booked': 'Tatt ut', 'unavailable': 'Utilgjengelig'} %}
+
 {% if devices %}
     <div style="overflow-x: auto;">
         <table role="grid" class="compact">
@@ -28,15 +30,15 @@
                         <td>{{ device.name }}</td>
                         <td>{{ device.location }}</td>
                         <td>
-                            <span class="status-badge status-{{ device.status }}">{{ device.status | replace('_', ' ') | title }}</span>
+                            <span class="status-badge status-{{ device.status }}">{{ status_labels.get(device.status, device.status | replace('_', ' ') | title) }}</span>
                         </td>
                         <td>{{ device.current_user or '—' }}</td>
                         <td>
-                            <div class="button-group">
-                                <a href="{{ url_for('admin.edit_device', device_id=device.id) }}" role="button" class="outline">Edit</a>
-                                <a href="{{ url_for('log.device_log', device_id=device.id) }}" role="button" class="outline">Log</a>
-                                <form method="POST" action="{{ url_for('admin.delete_device', device_id=device.id) }}" style="display: inline;" onsubmit="return confirm('Are you sure?');">
-                                    <button type="submit" role="button" class="outline" style="background-color: rgba(245, 101, 101, 0.1); color: #742a2a;">Delete</button>
+                            <div class="action-group">
+                                <a href="{{ url_for('admin.edit_device', device_id=device.id) }}">Endre</a>
+                                <a href="{{ url_for('log.device_log', device_id=device.id) }}">Logg</a>
+                                <form method="POST" action="{{ url_for('admin.delete_device', device_id=device.id) }}" style="display: inline;" onsubmit="return confirm('Sikker?');">
+                                    <button type="submit" role="button" class="outline" style="background-color: rgba(245, 101, 101, 0.1); color: #742a2a;">Slett</button>
                                 </form>
                             </div>
                         </td>
