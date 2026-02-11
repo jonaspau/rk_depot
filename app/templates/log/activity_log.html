@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Logg - Depotet{% endblock %}
+
+{% block content %}
+<h2>Logg</h2>
+{% if logs.items %}
+    <div style="overflow-x: auto;">
+        <table role="grid">
+            <thead>
+                <tr>
+                    <th>Dato og klokkeslett</th>
+                    <th>Enhet</th>
+                    <th>Bruker</th>
+                    <th>Handling</th>
+                    <th>Kommentarer</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs.items %}
+                    <tr>
+                        <td>
+                            <strong>{{ log.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</strong>
+                        </td>
+                        <td>
+                            {{ log.device.name }} - 
+                            <a href="{{ url_for('log.device_log', device_id=log.device_id) }}">{{ log.device_id }}</a>
+                        </td>
+                        <td>{{ log.user_name or '—' }}</td>
+                        <td>
+                            {% if log.action == 'booked' %}
+                                <span style="background-color: rgba(245, 101, 101, 0.2); padding: 0.25rem 0.5rem; border-radius: 0.25rem;">Tatt ut</span>
+                            {% elif log.action == 'handed_in' %}
+                                <span style="background-color: rgba(72, 187, 120, 0.2); padding: 0.25rem 0.5rem; border-radius: 0.25rem;">Levert</span>
+                            {% else %}
+                                {{ log.action | title }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if log.comment %}
+                                <details>
+                                    <summary>View</summary>
+                                    <p style="margin-top: 0.5rem; padding: 0.5rem; background-color: var(--form-element-disabled-background-color); border-radius: 0.25rem;">{{ log.comment }}</p>
+                                </details>
+                            {% else %}
+                                —
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    {% if logs.pages > 1 %}
+        <div style="margin-top: 2rem; text-align: center;">
+            <nav>
+                {% if logs.has_prev %}
+                    <a href="{{ url_for('log.activity_log', page=logs.prev_num) }}" role="button" class="outline">← Forrige</a>
+                {% endif %}
+
+                <span style="display: inline-block; padding: 0.5rem 1rem;">
+                    Page {{ logs.page }} of {{ logs.pages }}
+                </span>
+
+                {% if logs.has_next %}
+                    <a href="{{ url_for('log.activity_log', page=logs.next_num) }}" role="button" class="outline">Neste →</a>
+                {% endif %}
+            </nav>
+        </div>
+    {% endif %}
+{% else %}
+    <p><em>Ingen loggede hendelser.</em></p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Endre enhet{% endblock %}
+
+{% block content %}
+<h2>Endre enhet</h2>
+
+<div class="form-section">
+    <form method="POST">
+        <div class="form-group">
+            <label for="device_id">ID</label>
+            <input type="text" id="device_id" name="device_id" value="{{ device.id }}" disabled>
+        </div>
+
+        <div class="form-group">
+            <label for="name">Navn <span style="color: red;">*</span></label>
+            <input type="text" id="name" name="name" value="{{ device.name }}" required aria-required="true">
+        </div>
+
+        <div class="form-group">
+            <label for="category">Kategori <span style="color: red;">*</span></label>
+            <input type="text" id="category" name="category" value="{{ device.category }}" required aria-required="true">
+        </div>
+
+        <div class="form-group">
+            <label for="location">Sted <span style="color: red;">*</span></label>
+            <input type="text" id="location" name="location" value="{{ device.location }}" required aria-required="true">
+        </div>
+
+        <div class="form-group">
+            <label for="current_user">Bruker</label>
+            <input type="text" id="current_user" name="current_user" value="{{ device.current_user or '' }}" placeholder="Leave empty to clear">
+        </div>
+
+        <div class="form-group">
+            <label for="status">Status</label>
+            <select id="status" name="status">
+                <option value="available" {% if device.status=='available' %}selected{% endif %}>Available</option>
+                <option value="booked" {% if device.status=='booked' %}selected{% endif %}>Booked</option>
+                <option value="unavailable" {% if device.status=='unavailable' %}selected{% endif %}>Unavailable</option>
+            </select>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" role="button">Lagre</button>
+            <a href="{{ url_for('admin.admin_dashboard') }}" role="button" class="outline">Tilbake</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

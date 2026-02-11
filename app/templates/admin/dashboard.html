@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h2>Dashboard</h2>
+<p>Oversikt over hele biblioteket</p>
+
+<a href="{{ url_for('admin.add_device') }}" role="button">+ Legg til</a>
+
+{% if devices %}
+    <div style="overflow-x: auto;">
+        <table role="grid" class="compact">
+            <thead>
+                <tr>
+                    <th>Enhets-ID</th>
+                    <th>Navn</th>
+                    <th>Sted</th>
+                    <th>Status</th>
+                    <th>Bruker</th>
+                    <th>Handlinger</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for device in devices %}
+                    <tr>
+                        <td><strong>{{ device.id }}</strong></td>
+                        <td>{{ device.name }}</td>
+                        <td>{{ device.location }}</td>
+                        <td>
+                            <form class="inline-form" method="POST" action="{{ url_for('admin.update_device_status', device_id=device.id) }}">
+                                <select name="status" aria-label="Device status">
+                                    <option value="available" {% if device.status=='available' %}selected{% endif %}>Ledig</option>
+                                    <option value="booked" {% if device.status=='booked' %}selected{% endif %}>Booket</option>
+                                    <option value="unavailable" {% if device.status=='unavailable' %}selected{% endif %}>Utilgjengelig</option>
+                                </select>
+                                <button type="submit" role="button" class="outline">Oppdater</button>
+                            </form>
+                        </td>
+                        <td>{{ device.current_user or '—' }}</td>
+                        <td>
+                            <div class="button-group">
+                                <a href="{{ url_for('admin.edit_device', device_id=device.id) }}" role="button" class="outline">Edit</a>
+                                <a href="{{ url_for('log.device_log', device_id=device.id) }}" role="button" class="outline">Log</a>
+                                <form method="POST" action="{{ url_for('admin.delete_device', device_id=device.id) }}" style="display: inline;" onsubmit="return confirm('Are you sure?');">
+                                    <button type="submit" role="button" class="outline" style="background-color: rgba(245, 101, 101, 0.1); color: #742a2a;">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <p><em>Ingen enheter. <a href="{{ url_for('admin.add_device') }}">Legg til en enhet</a>.</em></p>
+{% endif %}
+{% endblock %}

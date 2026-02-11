@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Lever inn - Depotet{% endblock %}
+
+{% block content %}
+<h2>Lever</h2>
+<div>
+    {% if session_user %}
+        <span>Bruker: <strong>{{ session_user }}</strong> <a href="{{ url_for('user.change_user', next=request.path) }}">(bytt)</a></span>
+        <p></p>
+    {% endif %}
+</div>
+
+<div class="form-section">
+    <form method="POST">
+        {# Ensure user_name is submitted: use session user as hidden input, otherwise show a text field #}
+        {% if session_user %}
+            <input type="hidden" name="user_name" value="{{ session_user }}">
+        {% else %}
+            <div class="form-group">
+                <label for="user_name">Bruker</label>
+                <input id="user_name" name="user_name" placeholder="Brukernavn">
+            </div>
+        {% endif %}
+        <div class="form-group">
+            <label>Devices Booked By You <span style="color: red;">*</span></label>
+            {% if devices %}
+                <div class="card-grid">
+                    {% for device in devices %}
+                        <label class="device-card selectable">
+                            <span><input type="checkbox" name="device_ids" value="{{ device.id }}">
+                            {{ device.name }} - {{ device.id }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p><em>Du har ikke tatt ut noen enheter.</em></p>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="comment">Kommentarer:</label>
+            <textarea id="comment" name="comment" placeholder="Feil eller andre ting som er verdt å kommentere, se under." rows="5"></textarea>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" role="button">Lever</button>
+            <a href="{{ url_for('user.user_dashboard') }}" role="button" class="outline">Tilbake</a>
+        </div>
+    </form>
+</div>
+
+<div style="background-color: var(--form-element-disabled-background-color); padding: 1.5rem; border-radius: 0.5rem; margin-top: 2rem;">
+    <h3>⚠️ Viktig ⚠️</h3>
+    <ul>
+        <li>Sjekk at ting er rent og pent</li>
+        <li>Husk å melde inn feil i skjemaet</li>
+        <li>Dersom det er feil som forhindrer bruk, send en melding til fagleder eller operativ leder og legg enheten på korpsrommet</li>
+    </ul>
+</div>
+{% endblock %}
+
+<script>
+function toggleUserForm(id){
+    var el = document.getElementById(id);
+    if(!el) return;
+    el.style.display = (el.style.display === 'none') ? 'block' : 'none';
+}
+</script>

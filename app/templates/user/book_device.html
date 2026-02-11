@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Ta ut enheter{% endblock %}
+
+{% block content %}
+<h2>Ta ut</h2>
+<div>
+    {% if session_user %}
+        <span style="margin-left:1rem;">Bruker: <strong>{{ session_user }}</strong> <a href="{{ url_for('user.change_user', next=request.path) }}">(bytt)</a></span>
+        <p></p>
+    {% endif %}
+</div>
+
+{# Filters (GET) - placed outside the booking POST form #}
+<div style="margin-bottom: 1rem;">
+    <form method="GET" action="{{ url_for('user.book_device') }}">
+        <label for="category">Kategori:</label>
+        <select id="category" name="category">
+            <option value="">Alle</option>
+            {% for cat in categories %}
+                <option value="{{ cat }}" {% if selected_category==cat %}selected{% endif %}>{{ cat }}</option>
+            {% endfor %}
+        </select>
+        <label for="location" style="margin-left:1rem;">Sted:</label>
+        <select id="location" name="location">
+            <option value="">Alle steder</option>
+            {% for loc in locations %}
+                <option value="{{ loc }}" {% if selected_location==loc %}selected{% endif %}>{{ loc }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Filter</button>
+    </form>
+</div>
+
+<div class="form-section">
+    <form method="POST">
+        {# Ensure user_name is submitted: use session user as hidden input, otherwise show a text field #}
+        {% if session_user %}
+            <input type="hidden" name="user_name" value="{{ session_user }}">
+        {% else %}
+            <div class="form-group">
+                <label for="user_name">Bruker</label>
+                <input id="user_name" name="user_name" placeholder="Brukernavn" required>
+            </div>
+        {% endif %}
+        <div class="form-group">
+            <label>Enheter</label>
+            {% if devices %}
+                <div class="card-grid">
+                    {% for device in devices %}
+                        <label class="device-card selectable">
+                            <span><input type="checkbox" name="device_ids" value="{{ device.id }}">
+                            {{ device.name }} - {{ device.id }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p><em>Ingen tilgjengelige enheter.</em></p>
+            {% endif %}
+        </div>
+
+        <div class="button-group">
+            <button type="submit" role="button" {% if not devices %}disabled{% endif %}>Ta ut</button>
+            <a href="{{ url_for('user.user_dashboard') }}" role="button" class="outline">Gå tilbake</a>
+        </div>
+    </form>
+</div>
+
+<script>
+function toggleUserForm(id){
+    var el = document.getElementById(id);
+    if(!el) return;
+    el.style.display = (el.style.display === 'none') ? 'block' : 'none';
+}
+</script>
+{% endblock %}

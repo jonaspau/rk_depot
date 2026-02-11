@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Status{% endblock %}
+
+{% block content %}
+<h2>Status</h2>
+
+{% if devices %}
+    <div style="overflow-x: auto; margin-top: 1rem;">
+        <table role="grid">
+            <thead>
+                <tr>
+                    <th>Enhets-ID</th>
+                    <th>Navn</th>
+                    <th>Sted</th>
+                    <th>Status</th>
+                    <th>Bruker</th>
+                    <th>Handlinger</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for device in devices %}
+                    <tr>
+                        <td><strong>{{ device.id }}</strong></td>
+                        <td>{{ device.name }}</td>
+                        <td>{{ device.location }}</td>
+                        <td><span class="status-badge status-{{ device.status }}">{{ device.status | replace('_', ' ') | title }}</span></td>
+                        <td>{{ device.current_user or '—' }}</td>
+                        <td><a href="{{ url_for('log.device_log', device_id=device.id) }}" role="button" class="outline">Se logg</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 3rem; padding: 1.5rem; background-color: var(--form-element-disabled-background-color); border-radius: 0.5rem;">
+        {% set available = devices | selectattr('status', 'equalto', 'available') | list | length %}
+        {% set booked = devices | selectattr('status', 'equalto', 'booked') | list | length %}
+        <div>
+            <h4 style="margin-top: 0;">Enheter totalt</h4>
+            <p style="font-size: 2rem; margin: 0.5rem 0; color: var(--form-element-valid-border-color);">{{ devices | length }}</p>
+        </div>
+        <div>
+            <h4 style="margin-top: 0;">Tilgjengelig</h4>
+            <p style="font-size: 2rem; margin: 0.5rem 0; color: var(--form-element-valid-border-color);">{{ available }}</p>
+        </div>
+        <div>
+            <h4 style="margin-top: 0;">Tatt ut</h4>
+            <p style="font-size: 2rem; margin: 0.5rem 0; color: var(--form-element-invalid-border-color);">{{ booked }}</p>
+        </div>
+    </div>
+{% else %}
+    <p><em>Ingen enheter er lagt inn. Gå til admin-siden for å legge inn.</em></p>
+{% endif %}
+{% endblock %}

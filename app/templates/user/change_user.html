@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Bytt bruker - Device Booking System{% endblock %}
+
+{% block content %}
+<h2>Bytt bruker</h2>
+
+<div class="form-section">
+    <form method="POST" action="{{ url_for('user.set_user') }}">
+        <div class="form-group">
+            <label for="user_name">Brukernavn</label>
+            <input id="user_name" name="user_name" value="{{ session_user or '' }}" placeholder="Skriv brukernavn eller la stå tomt for å fjerne">
+        </div>
+        <input type="hidden" name="next" value="{{ next }}">
+        <div class="button-group">
+            <button type="submit">Lagre</button>
+            <a href="{{ next }}" role="button" class="outline">Avbryt</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
