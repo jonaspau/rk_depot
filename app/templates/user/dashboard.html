@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Depotet{% endblock %}
+
+{% block content %}
+<h2>Dashboard</h2>
+<div>
+    {% if session_user %}
+        <span>Bruker: <strong>{{ session_user }}</strong> <a href="{{ url_for('user.change_user', next=request.path) }}">(bytt)</a></span>
+        <p></p>
+    {% endif %}
+</div>
+
+
+<div class="button-group mb-3">
+    <a href="{{ url_for('user.book_device') }}" role="button">Ta ut</a>
+    <a href="{{ url_for('user.hand_in_device') }}" role="button">Levér</a>
+</div>
+
+<!-- change-user form moved to a standalone page; use the (bytt) link next to username -->
+
+<div style="margin-bottom: 1rem;">
+
+<h3 style="margin-top: 2rem;">Enheter du har tatt ut:</h3>
+{% if user_booked and user_booked|length > 0 %}
+    <div style="overflow-x: auto; margin-top: 1rem;">
+        <table role="grid" class="compact">
+            <thead>
+                <tr>
+                    <th>Enhets-ID</th>
+                    <th>Navn</th>
+                    <th>Sted</th>
+                    <th>Dato</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for device in user_booked %}
+                    <tr>
+                        <td><strong>{{ device.id }}</strong></td>
+                        <td>{{ device.name }}</td>
+                        <td>{{ device.location }}</td>
+                        <td>{{ device.booked_at.strftime('%Y-%m-%d %H:%M') if device.booked_at else '—' }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <p><em>Du har ikke tatt ut noen enheter.</em></p>
+{% endif %}
+{% endblock %}
