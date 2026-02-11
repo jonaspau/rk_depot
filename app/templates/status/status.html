@@ -8,7 +8,7 @@
 {% set status_labels = {'available': 'Ledig', 'booked': 'Tatt ut', 'unavailable': 'Utilgjengelig'} %}
 
 {% if devices %}
-    <div style="overflow-x: auto; margin-top: 1rem;">
+    <div class="table-scroll mt-2">
         <table role="grid">
             <thead>
                 <tr>
@@ -35,20 +35,20 @@
         </table>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 3rem; padding: 1.5rem; background-color: var(--form-element-disabled-background-color); border-radius: 0.5rem;">
+    <div class="stats-panel">
         {% set available = devices | selectattr('status', 'equalto', 'available') | list | length %}
         {% set booked = devices | selectattr('status', 'equalto', 'booked') | list | length %}
         <div>
-            <h4 style="margin-top: 0;">Enheter totalt</h4>
-            <p style="font-size: 2rem; margin: 0.5rem 0; color: var(--form-element-valid-border-color);">{{ devices | length }}</p>
+            <h4>Enheter totalt</h4>
+            <p class="big-number big-number--valid">{{ devices | length }}</p>
         </div>
         <div>
-            <h4 style="margin-top: 0;">Tilgjengelig</h4>
-            <p style="font-size: 2rem; margin: 0.5rem 0; color: var(--form-element-valid-border-color);">{{ available }}</p>
+            <h4>Tilgjengelig</h4>
+            <p class="big-number big-number--valid">{{ available }}</p>
         </div>
         <div>
-            <h4 style="margin-top: 0;">Tatt ut</h4>
-            <p style="font-size: 2rem; margin: 0.5rem 0; color: var(--form-element-invalid-border-color);">{{ booked }}</p>
+            <h4>Tatt ut</h4>
+            <p class="big-number big-number--invalid">{{ booked }}</p>
         </div>
     </div>
 {% else %}

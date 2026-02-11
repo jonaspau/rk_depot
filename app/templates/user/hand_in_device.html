@@ -23,7 +23,7 @@
             </div>
         {% endif %}
         <div class="form-group">
-            <label>Devices Booked By You <span style="color: red;">*</span></label>
+            <label>Devices Booked By You <span class="required">*</span></label>
             {% if devices %}
                 <div class="card-grid">
                     {% for device in devices %}
@@ -50,7 +50,7 @@
     </form>
 </div>
 
-<div style="background-color: var(--form-element-disabled-background-color); padding: 1.5rem; border-radius: 0.5rem; margin-top: 2rem;">
+<div class="important-note">
     <h3>⚠️ Viktig ⚠️</h3>
     <ul>
         <li>Sjekk at ting er rent og pent</li>

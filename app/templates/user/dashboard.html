@@ -17,11 +17,11 @@
     <a href="{{ url_for('user.hand_in_device') }}" role="button">Lever</a>
 </div>
 
-<div style="margin-bottom: 1rem;">
+<div class="mb-2">
 
-<h3 style="margin-top: 2rem;">Enheter du har tatt ut:</h3>
+<h3 class="mt-4">Enheter du har tatt ut:</h3>
 {% if user_booked and user_booked|length > 0 %}
-    <div style="overflow-x: auto; margin-top: 1rem;">
+    <div class="table-scroll mt-2">
         <table role="grid" class="compact">
             <thead>
                 <tr>

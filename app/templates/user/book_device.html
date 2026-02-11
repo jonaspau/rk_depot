@@ -6,13 +6,13 @@
 <h2>Ta ut</h2>
 <div>
     {% if session_user %}
-        <span style="margin-left:1rem;">Bruker: <strong>{{ session_user }}</strong> <a href="{{ url_for('user.change_user', next=request.path) }}">(bytt)</a></span>
+        <span class="ml-1">Bruker: <strong>{{ session_user }}</strong> <a href="{{ url_for('user.change_user', next=request.path) }}">(bytt)</a></span>
         <p></p>
     {% endif %}
 </div>
 
 {# Filters (GET) - placed outside the booking POST form #}
-<div style="margin-bottom: 1rem;">
+<div class="mb-2">
     <form method="GET" action="{{ url_for('user.book_device') }}">
         <label for="category">Kategori:</label>
         <select id="category" name="category">
@@ -21,7 +21,7 @@
                 <option value="{{ cat }}" {% if selected_category==cat %}selected{% endif %}>{{ cat }}</option>
             {% endfor %}
         </select>
-        <label for="location" style="margin-left:1rem;">Sted:</label>
+        <label for="location" class="ml-1">Sted:</label>
         <select id="location" name="location">
             <option value="">Alle steder</option>
             {% for loc in locations %}
