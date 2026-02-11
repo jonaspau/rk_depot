@@ -85,7 +85,7 @@ def edit_device(device_id):
             device.status = status
 
         db.session.commit()
-        flash(f'{name} {device_id} endret', 'success')
+        flash(f'{device.name} {device.id} endret', 'success')
         return redirect(url_for('admin.admin_dashboard'))
 
     return render_template('admin/edit_device.html', device=device)
@@ -99,7 +99,7 @@ def delete_device(device_id):
     db.session.delete(device)
     db.session.commit()
 
-    flash(f'{name} {device_id} fjernet', 'success')
+    flash(f'{device_name} {device_id} fjernet', 'success')
     return redirect(url_for('admin.admin_dashboard'))
 
 
