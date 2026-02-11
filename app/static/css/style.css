@@ -114,6 +114,50 @@ body {
   align-items: center;
 }
 
+/* Fixed bottom actions (booking/hand-in) */
+.fixed-action-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  border-top: 1px solid var(--form-element-disabled-border-color);
+  background-color: var(--background-color, var(--pico-background-color, #111));
+  box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.fixed-action-bar__inner {
+  /* Horizontal sizing/padding is provided by Pico's .container */
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+/* Keep the two actions on a single line */
+.fixed-action-bar__inner .action-group {
+  flex-wrap: nowrap;
+  width: 100%;
+  justify-content: space-between;
+}
+
+/* Keep button/link labels on a single line and consistent size */
+.fixed-action-bar__inner .action-group > button,
+.fixed-action-bar__inner .action-group > a[role="button"] {
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding: 0.6rem 1rem;
+  height: 2.75rem;
+  box-sizing: border-box;
+  margin: 0;
+  position: static;
+  vertical-align: middle;
+}
+
+/* Prevent page content being hidden under the fixed bar */
+.pb-fixed-action { padding-bottom: 5rem; }
+
 .form-section {
   background-color: var(--form-element-disabled-background-color);
   padding: 1.5rem;
