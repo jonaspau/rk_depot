@@ -16,6 +16,16 @@ main_bp = Blueprint('main', __name__)
 def index():
     return redirect(url_for('user.user_dashboard'))
 
+
+@main_bp.route('/privacy')
+def privacy():
+    return render_template('privacy.html')
+
+
+@main_bp.route('/about')
+def about():
+    return render_template('about.html')
+
 # Admin Routes
 @admin_bp.route('/')
 def admin_dashboard():

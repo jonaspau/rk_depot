@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Om RK Depot{% endblock %}
+
+{% block content %}
+<h2>Om RK Depot</h2>
+
+<p>
+    RK Depot er en enkel webapp som brukes til å ta ut og levere inn utstyr for Ski og Oppegård Røde Kors Hjelpekorps.
+    Løsningen gjør det lettere å holde oversikt over hvem som har hva, og når det ble tatt ut.
+</p>
+<p>
+    RK Depot er et tillitsbasert system. Det er ingen kontoer, og ingen personlig informasjon lagres utover det brukernavnet du oppgir ved utlån/innlevering.
+</p>
+<p>
+    Dersom du er logget ut og skal levere inn utstyr, klikk Lever og skriv inn samme navn som når du tok ut så vil applikasjonen slå opp i enhetene som er tatt ut.
+</p>
+<p>
+    Kildekode: <a href="https://github.com/jonaspau/rk_depot" target="_blank" rel="noopener noreferrer">github.com/jonaspau/rk_depot</a><br>
+    Kontakt: <a href="https://github.com/jonaspau" target="_blank" rel="noopener noreferrer">github.com/jonaspau</a>
+</p>
+
+<div class="mt-4">
+    <a href="{{ request.referrer or url_for('user.user_dashboard') }}" role="button" class="outline">← Tilbake</a>
+</div>
+{% endblock %}

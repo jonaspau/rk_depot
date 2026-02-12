@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Personvern{% endblock %}
+
+{% block content %}
+<h2>Personvern</h2>
+
+<p>
+    Denne nettsiden bruker en informasjonskapsel for å huske valgt brukernavn slik at du slipper å skrive det inn på nytt.
+    Når du setter bruker, lagres det i en økt-cookie som varer i opptil 7 dager.
+    Informasjonen brukes kun i forbindelse med utlån/innlevering.
+</p>
+
+<p>
+    Det er ingen innlogging eller konto, og ingen personlig informasjon lagres utover det brukernavnet du oppgir.
+    Informasjonen brukes kun for å knytte enheter du har tatt ut til et navn, og for å vise det i loggen.
+</p>
+
+<div class="mt-4">
+    <a href="{{ request.referrer or url_for('user.user_dashboard') }}" role="button" class="outline">← Tilbake</a>
+</div>
+{% endblock %}

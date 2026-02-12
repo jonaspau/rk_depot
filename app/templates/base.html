@@ -24,7 +24,13 @@
 
     <footer>
         <div class="container site-footer">
-            <p class="text-muted">Personvernlink her</p>
+            <p class="text-muted">
+                <a href="{{ url_for('main.index') }}">Forsiden</a>
+                ·
+                <a href="{{ url_for('main.privacy') }}">Personvern</a>
+                ·
+                <a href="{{ url_for('main.about') }}">Om RK Depot</a>
+            </p>
         </div>
     </footer>
 </body>
