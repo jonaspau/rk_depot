@@ -164,6 +164,7 @@ def set_user():
     next_page = request.form.get('next') or url_for('user.user_dashboard')
     if new_user:
         session['user_name'] = new_user
+        session.permanent = True
         flash(f'Logget inn som {new_user}', 'success')
     else:
         session.pop('user_name', None)
@@ -229,6 +230,7 @@ def book_device():
 
         # Remember the user in session for convenience during hand-in
         session['user_name'] = user_name
+        session.permanent = True
 
         db.session.commit()
         flash(f'Tok ut {len(device_ids)} enhet(er)', 'success')
@@ -274,6 +276,7 @@ def hand_in_device():
         # If no session user is set, allow a first submit to set the user and refresh.
         if (intent == 'set_user' or (not device_ids and form_user and not session_user)):
             session['user_name'] = form_user
+            session.permanent = True
             return redirect(url_for('user.hand_in_device'))
 
         if not user_name:

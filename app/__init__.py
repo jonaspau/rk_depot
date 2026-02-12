@@ -1,6 +1,7 @@
-from flask import Flask
+from flask import Flask, session
 from flask_sqlalchemy import SQLAlchemy
 import os
+from datetime import timedelta
 
 db = SQLAlchemy()
 
@@ -12,6 +13,14 @@ def create_app():
     app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY') or 'dev-secret-key-change-in-production'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, '..', 'device_booking.db')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    # Persist remembered user for up to 7 days
+    app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
+
+    @app.before_request
+    def _make_session_permanent_if_user_set():
+        if session.get('user_name'):
+            session.permanent = True
     
     # Initialize database
     db.init_app(app)
