@@ -29,6 +29,7 @@
                     <th>Navn</th>
                     <th>Sted</th>
                     <th>Dato</th>
+                    <th>Handling</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,6 +39,9 @@
                         <td>{{ device.name }}</td>
                         <td>{{ device.location }}</td>
                         <td>{{ device.booked_at.strftime('%Y-%m-%d %H:%M') if device.booked_at else '—' }}</td>
+                        <td>
+                            <a href="{{ url_for('user.hand_in_device', device_id=device.id) }}">Lever</a>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
