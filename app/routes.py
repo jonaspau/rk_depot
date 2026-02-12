@@ -337,6 +337,7 @@ def hand_in_device():
         return redirect(url_for('user.user_dashboard'))
 
     # GET: show only active booked devices for the current user (if known)
+    preselected_device_id = request.args.get('device_id')
     session_user = session.get('user_name')
     if session_user:
         booked_devices = db.session.query(Device, Booking).join(Booking).filter(
@@ -349,7 +350,13 @@ def hand_in_device():
     else:
         devices = []
 
-    return render_template('user/hand_in_device.html', devices=devices, session_user=session_user, show_menu=False)
+    return render_template(
+        'user/hand_in_device.html',
+        devices=devices,
+        session_user=session_user,
+        preselected_device_id=preselected_device_id,
+        show_menu=False,
+    )
 
 
 # Status Page

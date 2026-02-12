@@ -28,7 +28,7 @@
                 <div class="card-grid">
                     {% for device in devices %}
                         <label class="device-card selectable">
-                            <span><input type="checkbox" name="device_ids" value="{{ device.id }}">
+                            <span><input type="checkbox" name="device_ids" value="{{ device.id }}" {% if preselected_device_id and preselected_device_id == device.id %}checked{% endif %}>
                             {{ device.name }} - {{ device.id }}</span>
                         </label>
                     {% endfor %}
