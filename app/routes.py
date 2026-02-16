@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+from flask import Blueprint, current_app, render_template, request, redirect, url_for, flash, session
 from datetime import datetime
 from app import db
 from app.models import Device, Booking, ActivityLog
 from sqlalchemy import or_, and_
+from urllib.parse import urljoin, urlparse
 
 # Create blueprints
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
@@ -10,6 +11,18 @@ user_bp = Blueprint('user', __name__, url_prefix='/user')
 status_bp = Blueprint('status', __name__, url_prefix='/status')
 log_bp = Blueprint('log', __name__, url_prefix='/log')
 main_bp = Blueprint('main', __name__)
+
+
+def _is_safe_url(target: str) -> bool:
+    if not target:
+        return False
+    ref_url = urlparse(request.host_url)
+    test_url = urlparse(urljoin(request.host_url, target))
+    return test_url.scheme in {'http', 'https'} and ref_url.netloc == test_url.netloc
+
+
+def _safe_redirect_target(target: str, default: str) -> str:
+    return target if target and _is_safe_url(target) else default
 
 
 @main_bp.route('/')
@@ -36,10 +49,18 @@ def admin_dashboard():
 @admin_bp.route('/add-device', methods=['GET', 'POST'])
 def add_device():
     if request.method == 'POST':
-        device_id = request.form.get('device_id')
-        name = request.form.get('name')
-        category = request.form.get('category')
-        location = request.form.get('location')
+        device_id = (request.form.get('device_id') or '').strip()
+        name = (request.form.get('name') or '').strip()
+        category = (request.form.get('category') or '').strip()
+        location = (request.form.get('location') or '').strip()
+
+        if not device_id or not name or not category or not location:
+            flash('Fyll inn alle feltene', 'error')
+            return redirect(url_for('admin.add_device'))
+
+        if len(device_id) > 50 or len(name) > 200 or len(category) > 100 or len(location) > 200:
+            flash('Et eller flere felt er for langt', 'error')
+            return redirect(url_for('admin.add_device'))
 
         # Check if device ID already exists
         if Device.query.filter_by(id=device_id).first():
@@ -67,12 +88,25 @@ def edit_device(device_id):
     device = Device.query.get_or_404(device_id)
 
     if request.method == 'POST':
-        device.name = request.form.get('name')
-        device.category = request.form.get('category')
-        device.location = request.form.get('location')
+        name = (request.form.get('name') or '').strip()
+        category = (request.form.get('category') or '').strip()
+        location = (request.form.get('location') or '').strip()
+        if not name or not category or not location:
+            flash('Fyll inn alle obligatoriske felter', 'error')
+            return redirect(url_for('admin.edit_device', device_id=device_id))
+        if len(name) > 200 or len(category) > 100 or len(location) > 200:
+            flash('Et eller flere felt er for langt', 'error')
+            return redirect(url_for('admin.edit_device', device_id=device_id))
+
+        device.name = name
+        device.category = category
+        device.location = location
 
         # Admin can set/clear current user and status
-        current_user = request.form.get('current_user')
+        current_user = (request.form.get('current_user') or '').strip()
+        if current_user and len(current_user) > 200:
+            flash('Brukernavn er for langt', 'error')
+            return redirect(url_for('admin.edit_device', device_id=device_id))
         status = request.form.get('status')
         if current_user:
             device.current_user = current_user
@@ -134,7 +168,8 @@ def update_device_status(device_id):
         db.session.commit()
     except Exception as e:
         db.session.rollback()
-        flash(f'Feil ved oppdatering av status: {e}', 'error')
+        current_app.logger.exception('Feil ved oppdatering av status for device_id=%s', device_id)
+        flash('Feil ved oppdatering av status', 'error')
         return redirect(url_for('admin.admin_dashboard'))
 
     flash(f'{device.name} {device.id} status endret til {new_status}', 'success')
@@ -170,9 +205,12 @@ def user_dashboard():
 
 @user_bp.route('/set-user', methods=['POST'])
 def set_user():
-    new_user = request.form.get('user_name')
-    next_page = request.form.get('next') or url_for('user.user_dashboard')
+    new_user = (request.form.get('user_name') or '').strip()
+    next_page = _safe_redirect_target(request.form.get('next'), url_for('user.user_dashboard'))
     if new_user:
+        if len(new_user) > 200:
+            flash('Brukernavn er for langt', 'error')
+            return redirect(url_for('user.change_user', next=next_page))
         session['user_name'] = new_user
         session.permanent = True
         flash(f'Logget inn som {new_user}', 'success')
@@ -185,7 +223,8 @@ def set_user():
 @user_bp.route('/change-user', methods=['GET'])
 def change_user():
     # Render a small standalone change-user form. It posts to /user/set-user
-    next_page = request.args.get('next') or request.referrer or url_for('user.user_dashboard')
+    requested_next = request.args.get('next') or request.referrer
+    next_page = _safe_redirect_target(requested_next, url_for('user.user_dashboard'))
     session_user = session.get('user_name')
     return render_template('user/change_user.html', session_user=session_user, next=next_page, show_menu=False)
 
@@ -193,11 +232,18 @@ def change_user():
 @user_bp.route('/book', methods=['GET', 'POST'])
 def book_device():
     if request.method == 'POST':
-        user_name = request.form.get('user_name')
+        user_name = (request.form.get('user_name') or '').strip()
         # accept both `device_ids` and `device_ids[]` to be robust across browsers/UI
         device_ids = request.form.getlist('device_ids') + request.form.getlist('device_ids[]')
         # filter out any empty values
         device_ids = [d for d in device_ids if d]
+
+        if not user_name:
+            flash('Skriv inn brukernavn', 'error')
+            return redirect(url_for('user.book_device'))
+        if len(user_name) > 200:
+            flash('Brukernavn er for langt', 'error')
+            return redirect(url_for('user.book_device'))
 
         if not device_ids:
             flash('Velg minst en enhet', 'error')
@@ -275,13 +321,17 @@ def book_device():
 def hand_in_device():
     if request.method == 'POST':
         # Support handing in multiple devices at once
-        form_user = request.form.get('user_name')
+        form_user = (request.form.get('user_name') or '').strip()
         session_user = session.get('user_name')
         user_name = form_user or session_user
         intent = request.form.get('intent')
         device_ids = request.form.getlist('device_ids') + request.form.getlist('device_ids[]')
         device_ids = [d for d in device_ids if d]
-        comment = request.form.get('comment')
+        comment = (request.form.get('comment') or '').strip()
+
+        if user_name and len(user_name) > 200:
+            flash('Brukernavn er for langt', 'error')
+            return redirect(url_for('user.hand_in_device'))
 
         # If no session user is set, allow a first submit to set the user and refresh.
         if (intent == 'set_user' or (not device_ids and form_user and not session_user)):

@@ -32,6 +32,44 @@ The current setup is using gunicorn in a gcloud vm. Any adaptations may be requi
    python run.py
    ```
 
+## Environment variables
+
+This app is typically deployed behind **nginx** on a **Google Cloud Compute VM** with **HTTPS**. These env vars control runtime behavior and hardening:
+
+- `FLASK_ENV`
+   - Set to `production` in production (used to default `SESSION_COOKIE_SECURE=1`).
+
+- `SECRET_KEY`
+   - Flask session signing key. Set this to a long random value in production.
+
+- `FLASK_DEBUG`
+   - `1`/`true` enables debug mode when running `python run.py`.
+   - Default is off.
+
+- `HOST`, `PORT`
+   - Bind address/port when running `python run.py`.
+   - Defaults: `HOST=127.0.0.1`, `PORT=5000`.
+
+- `SESSION_COOKIE_SECURE`
+   - `1` forces the session cookie to be HTTPS-only.
+   - Defaults to `1` when `FLASK_ENV=production`, otherwise `0`.
+
+- `SESSION_COOKIE_SAMESITE`
+   - Defaults to `Lax`.
+
+- `ENABLE_HSTS`
+   - Optional: set to `1` to emit `Strict-Transport-Security` from Flask.
+   - Many setups prefer enabling HSTS in nginx instead.
+
+Example (production-ish):
+
+```bash
+export FLASK_ENV=production
+export SECRET_KEY='change-me-to-a-long-random-string'
+export SESSION_COOKIE_SECURE=1
+export SESSION_COOKIE_SAMESITE=Lax
+```
+
 5. **Access the application**
    - Open your browser and go to `/`
    - Admin Dashboard: `/admin`

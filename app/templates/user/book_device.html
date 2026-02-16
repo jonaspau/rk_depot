@@ -34,6 +34,7 @@
 
 <div class="form-section pb-fixed-action">
     <form method="POST">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
         {# Ensure user_name is submitted: use session user as hidden input, otherwise show a text field #}
         {% if session_user %}
             <input type="hidden" name="user_name" value="{{ session_user }}">
