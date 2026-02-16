@@ -38,6 +38,7 @@
                                 <a href="{{ url_for('admin.edit_device', device_id=device.id) }}">Endre</a>
                                 <a href="{{ url_for('log.device_log', device_id=device.id) }}">Logg</a>
                                 <form method="POST" action="{{ url_for('admin.delete_device', device_id=device.id) }}" onsubmit="return confirm('Sikker?');">
+                                    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
                                     <a href="#" class="danger-link" onclick="this.closest('form').requestSubmit(); return false;">Slett</a>
                                 </form>
                             </div>
