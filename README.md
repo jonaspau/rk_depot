@@ -36,6 +36,12 @@ The current setup is using gunicorn in a gcloud vm. Any adaptations may be requi
 
 This app is typically deployed behind **nginx** on a **Google Cloud Compute VM** with **HTTPS**. These env vars control runtime behavior and hardening:
 
+This repository uses a required `.env` file for local runs and for `gunicorn run:app`. Create it from the example:
+
+```bash
+cp .env.example .env
+```
+
 - `FLASK_ENV`
    - Set to `production` in production (used to default `SESSION_COOKIE_SECURE=1`).
 
