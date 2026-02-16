@@ -3,9 +3,21 @@
 Device Booking System - Main Application Entry Point
 """
 
+from pathlib import Path
+from dotenv import load_dotenv
+
 from app import create_app
 from flask import redirect, url_for
 import os
+
+
+dotenv_path = Path(__file__).resolve().with_name('.env')
+if not dotenv_path.exists():
+    raise RuntimeError(
+        "Missing .env file. Create one from .env.example (cp .env.example .env) "
+        "and set SECRET_KEY, etc."
+    )
+load_dotenv(dotenv_path)
 
 app = create_app()
 
