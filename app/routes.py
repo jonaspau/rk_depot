@@ -2,7 +2,6 @@ from flask import Blueprint, current_app, render_template, request, redirect, ur
 from datetime import datetime
 from app import db
 from app.models import Device, Booking, ActivityLog
-from sqlalchemy import or_, and_
 from urllib.parse import urljoin, urlparse
 
 # Create blueprints

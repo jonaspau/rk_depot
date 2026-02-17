@@ -7,7 +7,6 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 from app import create_app
-from flask import redirect, url_for
 import os
 
 
