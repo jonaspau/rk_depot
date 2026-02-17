@@ -39,7 +39,7 @@
                         <td>
                             {% if log.comment %}
                                 <details>
-                                    <summary>View</summary>
+                                    <summary>Vis kommentar</summary>
                                     <p class="log-comment">{{ log.comment }}</p>
                                 </details>
                             {% else %}
@@ -60,7 +60,7 @@
                     <a href="{{ url_for('log.activity_log', page=logs.prev_num) }}" role="button" class="outline">← Forrige</a>
                 {% endif %}
 
-                <span class="inline-badge">Page {{ logs.page }} of {{ logs.pages }}</span>
+                <span class="inline-badge">Side {{ logs.page }} av {{ logs.pages }}</span>
 
                 {% if logs.has_next %}
                     <a href="{{ url_for('log.activity_log', page=logs.next_num) }}" role="button" class="outline">Neste →</a>

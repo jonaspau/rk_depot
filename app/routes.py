@@ -104,7 +104,7 @@ def edit_device(device_id):
 
         # Admin can set/clear current user and status
         current_user = (request.form.get('current_user') or '').strip()
-        if current_user and len(current_user) > 200:
+        if current_user and len(current_user) > 20:
             flash('Brukernavn er for langt', 'error')
             return redirect(url_for('admin.edit_device', device_id=device_id))
         status = request.form.get('status')
@@ -208,7 +208,7 @@ def set_user():
     new_user = (request.form.get('user_name') or '').strip()
     next_page = _safe_redirect_target(request.form.get('next'), url_for('user.user_dashboard'))
     if new_user:
-        if len(new_user) > 200:
+        if len(new_user) > 20:
             flash('Brukernavn er for langt', 'error')
             return redirect(url_for('user.change_user', next=next_page))
         session['user_name'] = new_user
@@ -241,7 +241,7 @@ def book_device():
         if not user_name:
             flash('Skriv inn brukernavn', 'error')
             return redirect(url_for('user.book_device'))
-        if len(user_name) > 200:
+        if len(user_name) > 20:
             flash('Brukernavn er for langt', 'error')
             return redirect(url_for('user.book_device'))
 
@@ -329,7 +329,7 @@ def hand_in_device():
         device_ids = [d for d in device_ids if d]
         comment = (request.form.get('comment') or '').strip()
 
-        if user_name and len(user_name) > 200:
+        if user_name and len(user_name) > 20:
             flash('Brukernavn er for langt', 'error')
             return redirect(url_for('user.hand_in_device'))
 
