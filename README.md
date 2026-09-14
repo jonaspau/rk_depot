@@ -34,8 +34,6 @@ The current setup is using gunicorn in a gcloud vm. Any adaptations may be requi
 
 ## Environment variables
 
-This app is typically deployed behind **nginx** on a **Google Cloud Compute VM** with **HTTPS**. These env vars control runtime behavior and hardening:
-
 This repository uses a required `.env` file for local runs and for `gunicorn run:app`. Create it from the example:
 
 ```bash
@@ -187,23 +185,62 @@ This application is built with accessibility in mind:
 
 ```
 RK_depot/
+├── .env.example              # Example runtime configuration
 ├── app/
 │   ├── __init__.py           # Flask app factory
 │   ├── models.py             # SQLAlchemy models
 │   ├── routes.py             # Route handlers
 │   ├── templates/
 │   │   ├── base.html         # Base template
-│   │   ├── admin/            # Admin templates
-│   │   ├── user/             # User templates
-│   │   ├── status/           # Status page template
-│   │   └── log/              # Log templates
+│   │   ├── page.html          # Flatpage template
+│   │   ├── about.html         # About page
+│   │   ├── privacy.html       # Privacy page
+│   │   ├── admin/             # Admin templates
+│   │   ├── user/              # User templates
+│   │   ├── status/            # Status page template
+│   │   └── log/               # Log templates
 │   └── static/
-│       └── css/
-│           └── style.css     # Custom styles
+│       ├── css/
+│       │   └── style.css     # Custom styles
+│       └── robots.txt
+├── pages/                    # Markdown content served as flatpages
+│   ├── lagsutstyr.md         # Suggested team equipment
+│   ├── personlig-utstyr.md   # Suggested personal equipment
+│   └── staende-ordre.md      # Standing orders
+├── scripts/
+│   ├── release_all_booked.py # Release all currently booked devices
+│   ├── seed_devices.py       # Seed the database with devices
+│   ├── test_booking.py       # Booking flow test
+│   └── test_post_booking.py  # POST booking flow test
+├── device_booking.db_bak     # Database backup
+├── requirements.txt          # Python dependencies
 ├── run.py                    # Application entry point
 ├── requirements.txt          # Python dependencies
 └── README.md                 # This file
 ```
+
+## Flatpages
+
+Informational content is managed as Markdown files in the top-level `pages/` directory using Flask-FlatPages. Files must use the `.md` extension. The application configures this directory as the FlatPages root and renders each page with `app/templates/page.html`. Pages are served at `/info/<path>/`.
+
+### Creating a flatpage
+
+1. Create a Markdown file in `pages/`, for example `pages/utstyrskontroll.md`.
+2. Add YAML frontmatter with a `title`:
+
+   ```markdown
+   ---
+   title: Utstyrskontroll
+   ---
+
+   # Utstyrskontroll
+
+   Content written in Markdown.
+   ```
+
+3. Visit the corresponding URL under `/info/`: `pages/utstyrskontroll.md` is available at `/info/utstyrskontroll/`.
+
+Flatpages can link to one another with the same URL pattern, for example `/info/personlig-utstyr/`. The page content is converted to HTML by Flask-FlatPages and inserted into `page.html`; only trusted repository content should be published because the template renders the generated HTML directly.
 
 ### Database errors
 To reset the database, delete `device_booking.db` and run the application again to create a fresh database.
