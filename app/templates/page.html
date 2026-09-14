@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title }} - RK Depot{% endblock %}
+
+{% block content %}
+<main class="container mt-2">
+    <article class="markdown-body">
+        {{ page.html|safe }}
+    </article>
+</main>
+{% endblock %}

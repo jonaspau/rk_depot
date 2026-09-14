@@ -1,6 +1,6 @@
 from flask import Blueprint, current_app, render_template, request, redirect, url_for, flash, session
 from datetime import datetime
-from app import db
+from app import db, pages
 from app.models import Device, Booking, ActivityLog
 from urllib.parse import urljoin, urlparse
 
@@ -428,3 +428,10 @@ def device_log(device_id):
     device = Device.query.get_or_404(device_id)
     logs = ActivityLog.query.filter_by(device_id=device_id).order_by(ActivityLog.timestamp.desc()).all()
     return render_template('log/device_log.html', device=device, logs=logs)
+
+
+# Info Pages (FlatPages)
+@main_bp.route('/info/<path:path>/')
+def page(path):
+    page_obj = pages.get_or_404(path)
+    return render_template('page.html', page=page_obj)

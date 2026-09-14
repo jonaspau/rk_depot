@@ -1,11 +1,13 @@
 from flask import Flask, abort, request, session
 from flask_sqlalchemy import SQLAlchemy
+from flask_flatpages import FlatPages
 import os
 from datetime import timedelta
 import hmac
 import secrets
 
 db = SQLAlchemy()
+pages = FlatPages()
 
 def create_app():
     app = Flask(__name__)
@@ -15,6 +17,11 @@ def create_app():
     app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY') or 'dev-secret-key-change-in-production'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, '..', 'device_booking.db')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    # FlatPages Configuration
+    app.config['FLATPAGES_EXTENSION'] = '.md'
+    # Finner 'pages'-mappen i rotmappen (et nivå opp fra app/)
+    app.config['FLATPAGES_ROOT'] = os.path.join(basedir, '..', 'pages')
 
     # Session cookie hardening (behind nginx + https: set FLASK_ENV=production)
     env = (os.environ.get('FLASK_ENV') or os.environ.get('ENV') or '').lower()
@@ -65,8 +72,9 @@ def create_app():
         if session.get('user_name'):
             session.permanent = True
     
-    # Initialize database
+    # Initialize database & FlatPages
     db.init_app(app)
+    pages.init_app(app)
     
     # Register blueprints
     from app.routes import admin_bp, user_bp, status_bp, log_bp, main_bp
