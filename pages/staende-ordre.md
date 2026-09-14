@@ -61,3 +61,4 @@ Ha alltid nettbrett med SARTopo-tilgang tilgjengelig i kjøretøy som backup til
 For å sikre effektiv avreise og trygge aksjoner bør man ha personlig utstyr ferdig pakket i en sekk som kan bæres under en hel aksjon.
 
 [Forslag til personlig utstyr.](/info/personlig-utstyr/)
+[Forslag til lagsutstyr.](/info/lagsutstyr/)
