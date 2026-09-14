@@ -58,7 +58,12 @@ Aksjoner vil primært gjennomføres i FAKS. Appen kan lastes ned til privat mobi
 Ha alltid nettbrett med SARTopo-tilgang tilgjengelig i kjøretøy som backup til FAKS. Appen CalTopo kan også lastes ned og installeres gratis på private enheter om det er ønskelig.
 
 ### Personlig utstyr
+
 For å sikre effektiv avreise og trygge aksjoner bør man ha personlig utstyr ferdig pakket i en sekk som kan bæres under en hel aksjon.
 
 [Forslag til personlig utstyr.](/info/personlig-utstyr/)
+
+## Lagsutstyr
+Avhengig av type oppdrag kan lagsutstyret variere noe. Alt utstyret dere skal trenge bør finnes tilgjengelig på depot. 
+
 [Forslag til lagsutstyr.](/info/lagsutstyr/)
