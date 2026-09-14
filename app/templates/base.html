@@ -7,9 +7,21 @@
     <title>{% block title %}RK Depot{% endblock %}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script>
+        (() => {
+            const savedTheme = localStorage.getItem('rk-depot-theme');
+            const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            document.documentElement.dataset.theme = savedTheme || systemTheme;
+        })();
+    </script>
 </head>
 <body>
     <main id="main-content" class="container">
+        <div class="theme-switcher">
+            <button type="button" id="theme-toggle" class="outline secondary" aria-pressed="false">
+                Mørk modus
+            </button>
+        </div>
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -22,6 +34,28 @@
 
         {% block content %}{% endblock %}
     </main>
+
+    <script>
+        (() => {
+            const toggle = document.getElementById('theme-toggle');
+            const root = document.documentElement;
+
+            const updateToggle = () => {
+                const isDark = root.dataset.theme === 'dark';
+                toggle.textContent = isDark ? 'Lys modus' : 'Mørk modus';
+                toggle.setAttribute('aria-pressed', String(isDark));
+            };
+
+            toggle.addEventListener('click', () => {
+                const nextTheme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+                root.dataset.theme = nextTheme;
+                localStorage.setItem('rk-depot-theme', nextTheme);
+                updateToggle();
+            });
+
+            updateToggle();
+        })();
+    </script>
 
     <footer>
         <div class="container site-footer">
